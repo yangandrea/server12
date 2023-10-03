@@ -74,6 +74,7 @@ public class server {
 
                 if (numeroUtente == numeroSegreto) {
                     System.out.println("Il client ha indovinato il numero: " + numeroSegreto);
+                    
                     break;
                 } else {
                     String risposta;
@@ -95,4 +96,3 @@ public class server {
         }
     }
 }
-
