@@ -1,5 +1,7 @@
 package com.example;
 
+/*package com.example;
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -11,6 +13,7 @@ public class server {
     String m = null;
     BufferedReader inDalClient;
     DataOutputStream outVersoClient;
+    int numero;
 public Socket attendi(){
     try {
         System.out.println("server esecuzione" );
@@ -27,15 +30,69 @@ public Socket attendi(){
     return c;
 }
 public void communica(){
-try {
-    System.out.println("benvuto nel client");
+try {/*
+    System.out.println("benvenuto nel server");
     r=inDalClient.readLine();
-    System.out.println("ricevuta");
+    System.out.println("ricevuta" +r );
     m=r.toUpperCase();
-    System.out.println(" invio della stringa");
-    outVersoClient.writeBytes(m);
+    System.out.println("invio della stringa");
+    outVersoClient.writeBytes(m+ '\n');
     System.out.println("fine");
     c.close();
-} 
+    System.out.println("il numero generato");
+    numero= (int) (Math.random()* (100 - 0) + 0 );
+    System.out.println("il numero è "+ numero);
+}
+catch (Exception e) {
 }
 }
+}*/
+import java.io.*;
+import java.net.*;
+import java.util.Random;
+
+public class server {
+    public static void main(String[] args) {
+        try {
+            ServerSocket serverSocket = new ServerSocket(6789);
+            System.out.println("Server in attesa di connessione...");
+
+            Socket clientSocket = serverSocket.accept();
+            System.out.println("Client connesso");
+
+            Random random = new Random();
+            int numeroSegreto = random.nextInt(2);
+
+            int tentativiMassimi = 10;
+            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+            out.println(tentativiMassimi);
+
+            // Inizia il gioco
+            for (int tentativo = 1; tentativo <= tentativiMassimi; tentativo++) {
+                BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                int numeroUtente = Integer.parseInt(in.readLine());
+
+                if (numeroUtente == numeroSegreto) {
+                    System.out.println("Il client ha indovinato il numero: " + numeroSegreto);
+                    break;
+                } else {
+                    String risposta;
+                    if (numeroUtente < numeroSegreto) {
+                        risposta = "Troppo basso";
+                    } else {
+                        risposta = "Troppo alto";
+                    }
+                    System.out.println("Tentativo #" + tentativo + ": " + risposta);
+                    out.println(risposta);
+                }
+            }
+
+            // Chiudi le connessioni
+            clientSocket.close();
+            serverSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+

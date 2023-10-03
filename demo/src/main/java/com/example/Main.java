@@ -1,4 +1,4 @@
-package com.example;
+/*package com.example;
 
 public class Main {
     public static void main(String[] args) {
@@ -6,4 +6,4 @@ public class Main {
         se.attendi();
         se.communica();
     }
-}
+}*/
